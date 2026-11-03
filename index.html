@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAFE-Hair: Scalp-Anchored Fields for Exportable Single-View 3D Hair Reconstruction</title>
+  <meta name="description" content="SAFE-Hair reconstructs explicit, scalp-rooted, export-ready strand grooms from a single portrait by decoding hair from persistent follicles in a canonical scalp-UV domain." />
+  <meta property="og:title" content="SAFE-Hair (NeurIPS 2026): Exportable Single-View 3D Hair Reconstruction" />
+  <meta property="og:description" content="Scalp-anchored fields for explicit, export-ready strand grooms from a single portrait." />
+  <meta property="og:image" content="https://safe-hair.github.io/static/images/teaser.jpg" />
+  <meta property="og:url" content="https://safe-hair.github.io/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="container">
+      <p class="venue">NeurIPS 2026</p>
+      <h1 class="title">SAFE-Hair</h1>
+      <p class="subtitle">Scalp-Anchored Fields for Exportable Single-View 3D Hair Reconstruction</p>
+
+      <p class="authors">
+        <span class="author"><a href="https://wangandyyucheng.github.io/" target="_blank" rel="noopener">Yucheng Wang</a><sup>1</sup></span>,
+        <span class="author"><a href="https://jacky1128.github.io/" target="_blank" rel="noopener">Zedong Wang</a><sup>1</sup></span>,
+        <span class="author"><a href="https://scholar.google.com/citations?user=Fjqr0fEAAAAJ&hl=zh-CN" target="_blank" rel="noopener">Yuetong Wu</a><sup>1</sup></span>,
+        <span class="author"><a href="https://mayuelala.github.io/" target="_blank" rel="noopener">Yue Ma</a><sup>1</sup></span>,
+        <span class="author"><a href="https://www.danxurgb.net/" target="_blank" rel="noopener">Dan Xu</a><sup>1&dagger;</sup></span>
+      </p>
+      <p class="affil"><sup>1</sup>The Hong Kong University of Science and Technology</p>
+      <p class="corr"><sup>&dagger;</sup>Corresponding author</p>
+
+      <div class="links">
+        <a class="pill" href="https://github.com/WANGAndyYucheng/SAFE-Hair-arXiv-" target="_blank" rel="noopener">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.8423 0a1.0037 1.0037 0 0 0-.922.6078c-.1536.3687-.0438.6275.2938 1.1113l6.9185 8.3597-1.0223 1.1058a1.0393 1.0393 0 0 0 .003 1.4229l1.2292 1.3135-5.4391 6.4444c-.2803.299-.4538.823-.2971 1.1986a1.0253 1.0253 0 0 0 .9585.635.9133.9133 0 0 0 .6891-.3405l5.783-6.126 7.4902 8.0051a.8527.8527 0 0 0 .6835.2597.9575.9575 0 0 0 .8777-.6138c.1577-.377-.017-.7502-.306-1.1407l-7.0518-8.3418 1.0632-1.13a.9626.9626 0 0 0 .0089-1.3165L4.6336.4639s-.3733-.4535-.768-.463zm0 .272h.0166c.2179.0052.4874.2715.5644.3639l.005.006.0052.0055 10.169 10.9905a.6915.6915 0 0 1-.0072.945l-1.0666 1.133-1.4982-1.7724-8.5994-10.39c-.3286-.472-.352-.6183-.2592-.841a.7307.7307 0 0 1 .6704-.4401Zm14.341 1.5701a.877.877 0 0 0-.6554.2418l-5.6962 6.1584 1.6944 1.8319 5.3089-6.5138c.3251-.4335.479-.6603.3247-1.0292a1.1205 1.1205 0 0 0-.9763-.689zm-7.6557 12.2823 1.3186 1.4135-5.7864 6.1295a.6494.6494 0 0 1-.4959.26.7516.7516 0 0 1-.706-.4669c-.1119-.2682.0359-.6864.2442-.9083l.0051-.0055.0047-.0055z"/></svg>
+          arXiv
+        </a>
+        <a class="pill" href="https://github.com/SAFE-Hair/SAFE-Hair" target="_blank" rel="noopener">
+          <svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.52 7.52 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          Code
+        </a>
+        <a class="pill" href="#bibtex">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 5.2C5.4 6.4 4.4 8.2 4.4 10.6v2.8c0 2.4 1 4.2 2.8 5.4l1.5-1.7c-1.1-.8-1.7-2-1.7-3.7v-2.8c0-1.7.6-2.9 1.7-3.7l-1.5-1.7zm9.6 0-1.5 1.7c1.1.8 1.7 2 1.7 3.7v2.8c0 1.7-.6 2.9-1.7 3.7l1.5 1.7c1.8-1.2 2.8-3 2.8-5.4v-2.8c0-2.4-1-4.2-2.8-5.4z"/></svg>
+          BibTeX
+        </a>
+      </div>
+    </div>
+
+    <div class="container-wide">
+      <figure class="card teaser" id="teaser">
+        <img src="static/images/teaser.jpg" width="2600" height="1226" alt="SAFE-Hair teaser: front, side and back views of reconstructed strand hair from single portraits" class="zoomable" />
+        <figcaption class="fig-caption">
+          <span class="fig-label">Figure 1.</span>
+          <b>SAFE-Hair</b> reconstructs an explicit strand-based 3D hair asset with stable scalp-rooted follicles from a single portrait.
+          Front, side and back views recover the full hairstyle; the bottom row spans eight categories.
+        </figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ ABSTRACT ============ -->
+    <section class="section soft" id="contributions" aria-labelledby="contributions-title">
+      <div class="container">
+        <h2 class="section-title" id="contributions-title">Contributions</h2>
+        <div class="card contrib">
+          <ul class="contrib-grid">
+            <li>
+              <h3>32,768 strands</h3>
+              <p>Grown from fixed follicles on a shared scalp, from one portrait.</p>
+            </li>
+            <li>
+              <h3>Persistent identity</h3>
+              <p>Every strand can be edited, simulated and exported in one forward pass.</p>
+            </li>
+            <li>
+              <h3>Scalp-rooted</h3>
+              <p>The structure grooming and simulation need. Meshes and Gaussians lose it.</p>
+            </li>
+          </ul>
+        </div>
+
+        <ul class="cards cards-3" aria-label="Hair representations">
+          <li class="card card-pad card-miss" data-reveal>
+            <h3>Mesh-based</h3>
+            <p>No explicit strands, so nothing can be groomed or simulated per strand, and there is no follicle correspondence.</p>
+          </li>
+          <li class="card card-pad card-miss" data-reveal style="--i:1">
+            <h3>Gaussian-based</h3>
+            <p>Strands pass through the head, follicles are unstable and do not persist, and the result is hard to serialise as a groom.</p>
+          </li>
+          <li class="card card-pad card-ours" data-reveal style="--i:2">
+            <h3>SAFE-Hair (ours)</h3>
+            <p>Explicit strands rooted on the scalp, a persistent follicle ID for every one by construction, and collision-aware grooms ready to export.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ METHOD ============ -->
+    <section class="section" id="method" aria-labelledby="method-title">
+      <div class="container">
+        <h2 class="section-title" id="method-title">Methodology</h2>
+        <p class="section-lead">
+          Instead of predicting unordered strands in image or world space, <span class="nowrap">SAFE-Hair</span> reasons entirely in a
+          <b>canonical scalp-UV domain</b> shared by all subjects, then decodes one candidate strand per persistent follicle.
+        </p>
+      </div>
+
+      <div class="container-wide">
+        <figure class="card figure" data-reveal>
+          <img src="static/images/overview.jpg" width="2600" height="1426" alt="SAFE-Hair pipeline overview" class="zoomable" loading="lazy" />
+          <figcaption class="fig-caption">
+            <span class="fig-label">Figure 2.</span>
+            <b>Overview.</b> Dense image features are projected into scalp-UV space; a conditional Rectified Flow turns noise
+            into a latent scalp field \(Z\); a shared follicle decoder queries \(Z\) at canonical follicles
+            \(\{\mathbf{u}_r\}_{r=1}^{R}\) and strands are obtained by forward integration from fixed scalp roots.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="container">
+        <ol class="cards cards-2 stages" id="stages">
+          <li class="card card-pad stage" data-reveal>
+            <h3>Scalp-UV conditioning</h3>
+            <p>
+              Fit a template head, extract DINOv2 features and warp them onto the scalp through the recovered camera. A fixed
+              follicle set gives every strand a persistent identity.
+            </p>
+            <div class="eq">\[ \mathcal{R}=\{\mathbf{u}_r\}_{r=1}^{R},\qquad \mathbf{x}_{r,1}=\psi(\mathbf{u}_r) \]</div>
+          </li>
+          <li class="card card-pad stage" data-reveal style="--i:1">
+            <h3>Rectified flow on scalp fields</h3>
+            <p>
+              A conditional vector field transports Gaussian noise to a latent scalp field
+              \(Z\in\mathbb{R}^{128\times128\times64}\), completing invisible regions with learned priors.
+            </p>
+            <div class="eq">\[ \mathcal{L}_{\mathrm{rf}}=\mathbb{E}\big\|v_\theta(z_t,t,C)-(z_1-z_0)\big\|_2^2 \]</div>
+          </li>
+          <li class="card card-pad stage" data-reveal>
+            <h3>Persistent follicle decoding</h3>
+            <p>
+              A shared decoder predicts occupancy, segment directions, length allocation and total length; strands grow from
+              the root by forward integration.
+            </p>
+            <div class="eq">\[ \mathbf{x}_{r,t+1}=\mathbf{x}_{r,t}+L_r\,q_{r,t}\,\hat{\mathbf{d}}_{r,t} \]</div>
+          </li>
+          <li class="card card-pad stage" data-reveal style="--i:1">
+            <h3>Validity priors and export</h3>
+            <p>
+              <b>Attachment</b>, <b>collision</b> and <b>bending</b> priors reduce root flipping, head interpenetration and
+              kinks. Strands are grouped into guide families and serialised to Alembic or engine-native grooms.
+            </p>
+            <div class="eq">\[ g(r)=\arg\min_m\ \alpha\|\mathbf{u}_r-\mathbf{u}_m\|^2+\beta\|\mathbf{f}_r-\mathbf{f}_m\|^2 \]</div>
+          </li>
+        </ol>
+
+        <!-- Interactive forward-integration demo -->
+        <div class="card demo" id="demo" data-reveal>
+          <div class="demo-text">
+            <h3>Interactive: grow strands from fixed roots</h3>
+            <p>
+              Each curve is integrated from a fixed root on the scalp using per-segment directions
+              \(\hat{\mathbf{d}}_{r,t}\) and length weights \(q_{r,t}\). Switch the priors off to see why they matter.
+            </p>
+            <div class="demo-controls">
+              <label>Total length \(L_r\)
+                <input type="range" id="demo-length" min="0.4" max="1.8" step="0.01" value="1.1" />
+              </label>
+              <label>Curl
+                <input type="range" id="demo-curl" min="0" max="1" step="0.01" value="0.35" />
+              </label>
+              <div class="toggles">
+                <label class="toggle"><input type="checkbox" id="demo-collision" checked /><span></span>Collision prior</label>
+                <label class="toggle"><input type="checkbox" id="demo-attach" checked /><span></span>Attachment prior</label>
+                <label class="toggle"><input type="checkbox" id="demo-guides" /><span></span>Colour by guide family</label>
+              </div>
+            </div>
+          </div>
+          <div class="demo-canvas-wrap">
+            <canvas id="demo-canvas" aria-label="Strands integrated from fixed scalp roots"></canvas>
+            <p class="demo-legend" id="demo-legend">Penetrating samples: <b id="demo-pen">0%</b></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUALITATIVE ============ -->
+    <section class="section soft" id="results" aria-labelledby="results-title">
+      <div class="container">
+        <h2 class="section-title" id="results-title">Qualitative Results</h2>
+        <p class="section-lead">
+          The portrait shows only the front. <span class="nowrap">SAFE-Hair</span> completes the side and back on the scalp, and curls continue around
+          the head instead of stopping at the silhouette.
+        </p>
+
+        <ul class="card panel views" aria-label="One input, three reconstructed views" data-reveal>
+          <li>
+            <img src="static/images/crops/view-input.jpg" width="420" height="420" alt="Input portrait" loading="lazy" />
+            <p><b>Input</b> one front-facing portrait</p>
+          </li>
+          <li>
+            <img src="static/images/crops/view-front.jpg" width="420" height="420" alt="Reconstructed hair, front view" loading="lazy" />
+            <p><b>Front</b> reconstructed groom</p>
+          </li>
+          <li>
+            <img src="static/images/crops/view-side.jpg" width="420" height="420" alt="Reconstructed hair, side view" loading="lazy" />
+            <p><b>Side</b> never seen in the input</p>
+          </li>
+          <li>
+            <img src="static/images/crops/view-back.jpg" width="420" height="420" alt="Reconstructed hair, back view" loading="lazy" />
+            <p><b>Back</b> completed by learned priors</p>
+          </li>
+        </ul>
+
+        <h3 class="sub-title">Comparison with Img2Haircut and DiffLocks</h3>
+        <p class="section-lead">
+          Against <b>Img2Haircut</b> and <b>DiffLocks</b>, <span class="nowrap">SAFE-Hair</span> produces scalp-attached strand geometry with more consistent
+          back-view completion and fewer head-interpenetration artifacts.
+        </p>
+      </div>
+
+      <div class="container-wide">
+        <figure class="card figure" data-reveal>
+          <img src="static/images/result3.jpg" width="2600" height="1535" alt="Multi-view comparison with Img2Haircut and DiffLocks" class="zoomable" loading="lazy" />
+          <figcaption class="fig-caption">
+            <span class="fig-label">Figure 3.</span>
+            Front, side and back views for four portraits. Each block shows <b>SAFE-Hair</b> first, then Img2Haircut and DiffLocks.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ QUANTITATIVE ============ -->
+    <section class="section" id="quantitative" aria-labelledby="quant-title">
+      <div class="container">
+        <h2 class="section-title" id="quant-title">Quantitative Results</h2>
+        <p class="section-lead">
+          On <span class="nowrap">HairBench-3D</span>, <span class="nowrap">SAFE-Hair</span> leads every geometry metric and every asset metric against five baselines. It reaches an F-score of
+          81.7 (from 77.9), 69.8 on invisible regions (from 66.1) and a penetration ratio of 3.9% (from 4.8%),
+          compared with the strongest prior baseline.
+        </p>
+
+        <ul class="stats" aria-label="Headline numbers">
+          <li data-reveal>
+            <p class="stat"><span class="counter" data-to="99.8" data-dec="1">99.8</span>%</p>
+            <p>of roots land on a valid scalp region, against 93.2% for the strongest prior method.</p>
+          </li>
+          <li data-reveal style="--i:1">
+            <p class="stat"><span class="counter" data-to="3.28" data-dec="2">3.28</span>&nbsp;mm</p>
+            <p>Chamfer distance, down from 3.74&nbsp;mm.</p>
+          </li>
+          <li data-reveal style="--i:2">
+            <p class="stat"><span class="counter" data-to="4.2" data-dec="1">4.2</span>&nbsp;s</p>
+            <p>per portrait for 32,768 strands, with no test-time optimisation.</p>
+          </li>
+        </ul>
+
+        <div class="card card-pad chart" data-reveal>
+          <div class="chart-header">
+            <div class="seg" id="chart-dataset" role="group" aria-label="Comparison">
+              <button class="active" type="button" data-set="main" aria-pressed="true">Against baselines</button>
+              <button type="button" data-set="ablation" aria-pressed="false">Ablation</button>
+            </div>
+            <div class="seg seg-light" id="chart-metric" role="group" aria-label="Metric">
+              <button class="active" type="button" data-metric="0" aria-pressed="true">ChamferPts &darr;</button>
+              <button type="button" data-metric="1" aria-pressed="false">F-score &uarr;</button>
+              <button type="button" data-metric="2" aria-pressed="false">F-score (invis.) &uarr;</button>
+              <button type="button" data-metric="3" aria-pressed="false">IoU &uarr;</button>
+              <button type="button" data-metric="4" aria-pressed="false">Penetration &darr;</button>
+            </div>
+          </div>
+          <div class="bars" id="bars"></div>
+        </div>
+
+        <div class="table-block">
+          <h3 class="sub-title">Main results</h3>
+          <div class="card table-scroll">
+            <table>
+              <thead>
+                <tr><th>Method</th><th>Chamfer<wbr>Pts&nbsp;&darr;</th><th>F-score&nbsp;&uarr;</th><th>F-score (Invis.)&nbsp;&uarr;</th><th>IoU&nbsp;&uarr;</th><th>Pen. ratio&nbsp;&darr;</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Perm</td><td>5.82</td><td>61.4</td><td>42.7</td><td>0.781</td><td>8.6</td></tr>
+                <tr><td>Neural<wbr>HDHair</td><td>4.36</td><td>71.8</td><td>56.2</td><td>0.824</td><td>6.1</td></tr>
+                <tr><td>Hairstep</td><td>4.48</td><td>70.6</td><td>59.4</td><td>0.872</td><td>7.2</td></tr>
+                <tr><td>DiffLocks</td><td>3.91</td><td>76.5</td><td>63.8</td><td>0.847</td><td>5.4</td></tr>
+                <tr><td>Im2Haircut</td><td class="second">3.74</td><td class="second">77.9</td><td class="second">66.1</td><td>0.861</td><td class="second">4.8</td></tr>
+                <tr class="ours"><td>SAFE-Hair (ours)</td><td>3.28</td><td>81.7</td><td>69.8</td><td>0.884</td><td>3.9</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="table-block">
+          <h3 class="sub-title">Asset usability</h3>
+          <div class="card table-scroll">
+            <table>
+              <thead>
+                <tr><th>Method</th><th>Root<wbr>Dist&nbsp;&darr;</th><th>Valid<wbr>Root&nbsp;&uarr;</th><th>Follicle<wbr>Stab.&nbsp;&uarr;</th><th>Export<wbr>Succ.&nbsp;&uarr;</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Perm</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr>
+                <tr><td>Neural<wbr>HDHair</td><td>3.8</td><td>82.1</td><td>&ndash;</td><td>71.3</td></tr>
+                <tr><td>Hairstep</td><td>2.9</td><td>87.4</td><td>&ndash;</td><td>76.8</td></tr>
+                <tr><td>DiffLocks</td><td>2.4</td><td>89.6</td><td>0.61<sup>&dagger;</sup></td><td>82.5</td></tr>
+                <tr><td>Im2Haircut</td><td class="second">1.7</td><td class="second">93.2</td><td class="second">0.68<sup>&dagger;</sup></td><td class="second">88.1</td></tr>
+                <tr class="ours"><td>SAFE-Hair (ours)</td><td>0.2</td><td>99.8</td><td>0.91</td><td>99.6</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="caption caption-left">
+            <b>Bold</b>: best; underlined: second best. RootDist: mean root-to-scalp distance (mm). ValidRoot: % of roots on a valid scalp region.
+            FollicleStab.: active-follicle consistency under crop, colour and mask perturbations. ExportSucc.: % of predictions serialisable
+            as valid grooms. <sup>&dagger;</sup>Approximated by nearest-root matching.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPORT ============ -->
+    <section class="section soft" id="export" aria-labelledby="export-title">
+      <div class="container">
+        <h2 class="section-title" id="export-title">Exportable Groom</h2>
+        <p class="section-lead">
+          Every strand is decoded from a canonical follicle, so its identity is simply the follicle index \(r\).
+          Follicles are grouped into guide families and the result serialises straight into Alembic or engine-native strand assets.
+        </p>
+
+        <ul class="card panel grooms" aria-label="Groom views" data-reveal>
+          <li>
+            <img src="static/images/groom_cluster.jpg" width="1080" height="1080" alt="Strands coloured by guide-family cluster" class="zoomable" loading="lazy" />
+            <p><b>(a)</b> Guide-family clusters</p>
+          </li>
+          <li>
+            <img src="static/images/groom_guides.jpg" width="1080" height="1080" alt="Guide strands of the groom" class="zoomable" loading="lazy" />
+            <p><b>(b)</b> Guide strands</p>
+          </li>
+          <li>
+            <img src="static/images/groom_refined.jpg" width="1080" height="1080" alt="Refined groom rendered with strand shading" class="zoomable" loading="lazy" />
+            <p><b>(c)</b> Refined groom</p>
+          </li>
+        </ul>
+
+        <div class="export-detail">
+          <ul class="card bullets">
+            <li><b>Dense follicles.</b> 32,768 canonical follicles with 32 control points per strand.</li>
+            <li><b>Guide selection.</b> Guides chosen by farthest-point sampling in scalp-UV space.</li>
+            <li><b>Child assignment.</b> Children assigned in joint <span class="nowrap">scalp-position</span> and strand-feature space.</li>
+            <li><b>Lossless metadata.</b> Grouping never alters the reconstructed geometry.</li>
+          </ul>
+          <pre class="record" aria-label="Exported strand record"><code><span class="k">strand</span> {
+  <span class="p">follicle_id</span>: <span class="n">18342</span>
+  <span class="p">scalp_uv</span>: (<span class="n">0.412</span>, <span class="n">0.637</span>)
+  <span class="p">points</span>: float3[<span class="n">32</span>]
+  <span class="p">guide_id</span>: <span class="n">207</span>
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BIBTEX ============ -->
+    <section class="section" id="bibtex" aria-labelledby="bibtex-title">
+      <div class="container">
+        <h2 class="section-title" id="bibtex-title">BibTeX</h2>
+        <div class="bib-wrap">
+<pre class="bib"><code id="bib-text">@inproceedings{wang2026safehair,
+  title     = {SAFE-Hair: Scalp-Anchored Fields for Exportable
+               Single-View 3D Hair Reconstruction},
+  author    = {Wang, Yucheng and Wang, Zedong and Wu, Yuetong
+               and Ma, Yue and Xu, Dan},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2026}
+}</code></pre>
+          <button class="copy" id="copy-bib" type="button">Copy</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <p>
+        &copy; 2026 Yucheng Wang, Zedong Wang, Yuetong Wu, Yue Ma, Dan Xu &middot; The Hong Kong University of Science and Technology
+      </p>
+      <p>
+        <a href="https://github.com/SAFE-Hair/SAFE-Hair" target="_blank" rel="noopener">Code on GitHub</a>
+        &middot; <a href="#top">Back to top</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <img alt="" id="lightbox-img" />
+  </div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+  <script src="static/js/main.js"></script>
+</body>
+</html>
